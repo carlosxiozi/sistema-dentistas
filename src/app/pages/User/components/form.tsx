@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, FormEvent } from "react";
 import { User } from "@/src/app/models/user";
 import { useCreateUser, useUpdateUser } from "@/src/app/hooks/UseUser";

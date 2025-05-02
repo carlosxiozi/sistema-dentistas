@@ -1,3 +1,5 @@
+"use client";
+
 import { Modal, Box, Typography, TextField, Button, MenuItem, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';

@@ -8,13 +8,13 @@ import Sessions from "./components/Sessions";
 import { useGetRole } from "../../hooks/useRol";
 
 const Home = () => {
-  const userContext = useUser();
+  const {user}= useUser();
   const role = useGetRole(); 
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
-    if (!userContext || !userContext.user) {
+    if (!user) {
       router.push('/api/auth/login');
       return;
     }
@@ -25,7 +25,7 @@ const Home = () => {
       return;
     }
 
-    const matchedRole = roleData.find((r) => r.name === userContext?.user?.role);
+    const matchedRole = roleData.find((r) => r.name === user?.role);
 
     if (!matchedRole) {
       router.push('/api/Auth/Login');
@@ -40,7 +40,7 @@ const Home = () => {
     }
 
     setIsLoading(false);
-  }, [userContext, role, router]);
+  }, [user, role, router]);
 
   if (isLoading) {
     return <Loading />; 

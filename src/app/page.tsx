@@ -1,12 +1,12 @@
-"use server";
+"use client";
 
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import { useUser } from "./Context/UserContext";
 
-export default async function Home() {
-  const token = (await cookies()).get('token')?.value;
+export default function Home() {
+  const userContext = useUser();
 
-  if (token) {
+  if (!userContext) {
     redirect("/pages/Dashboard");
   }
 

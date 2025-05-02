@@ -1,17 +1,19 @@
+/* Importa Tailwind CSS */
 @import "tailwindcss";
 
+/* Variables predeterminadas (modo claro) */
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
+/* Establece el tema predeterminado con las variables de color */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
+/* Estilo para el modo oscuro */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -19,8 +21,60 @@
   }
 }
 
+/* Estilo global */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Aquí puedes usar las clases de Tailwind para establecer los colores de fondo y texto */
+.dark body {
+  background: var(--background);
+  color: var(--foreground);
+}
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-once {
+  animation: spin 1.5s linear 1;
+}
+/* FullCalendar toolbar custom styles */
+.fc-toolbar.fc-header-toolbar {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fc-toolbar-chunk {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.fc-button {
+  font-size: 0.875rem; /* Tamaño más pequeño de letra */
+  padding: 0.4rem 0.6rem; /* Ajuste de padding */
+}
+
+@media (max-width: 640px) {
+  .fc-toolbar.fc-header-toolbar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .fc-toolbar-chunk {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .fc-button {
+    width: 100%;
+  }
 }

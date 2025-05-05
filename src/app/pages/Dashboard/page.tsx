@@ -14,7 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!userContext) {
-      router.push('/api/auth/login');
+      router.push('/api/Auth/Login');
       return;
     }
     if (userContext.user?.role === 'patient') {

@@ -3,7 +3,6 @@
 import { useState, FormEvent } from "react";
 import { Role } from "@/src/app/models/role";
 import { useCreateRole, useUpdateRole } from "@/src/app/hooks/useRol";
-
 import {
   Box,
   Button,
@@ -71,7 +70,7 @@ export function FormRole({ role, isNew = false, onClose }: FormRoleProps) {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <Box display="flex" flexDirection="column" gap={3}>
+        <Box display="flex" flexDirection="column" gap={{ xs: 2, md: 3 }} p={{ xs: 1, md: 0 }}>
           <TextField
             label="Nombre del Rol"
             variant="outlined"
@@ -82,7 +81,7 @@ export function FormRole({ role, isNew = false, onClose }: FormRoleProps) {
             onChange={(e) => setName(e.target.value)}
           />
 
-          <Box display="flex" justifyContent="flex-end">
+          <Box display="flex" justifyContent="flex-end" maxWidth={{ xs: '100%', md: 'auto' }}>
             <Button variant="contained" color="primary" type="submit">
               {isNew ? "Crear Rol" : "Actualizar Rol"}
             </Button>
@@ -93,13 +92,13 @@ export function FormRole({ role, isNew = false, onClose }: FormRoleProps) {
       <Modal open={openModal} onClose={handleModalClose}>
         <Box
           sx={{
-            width: 360,
+            width: { xs: '90%', sm: 360 },
             bgcolor: 'background.paper',
             borderRadius: 2,
             boxShadow: 24,
-            p: 4,
+            p: { xs: 3, sm: 4 },
             mx: 'auto',
-            mt: '15%',
+            mt: { xs: '30%', sm: '15%' },
             textAlign: 'center',
             position: 'relative'
           }}
@@ -121,11 +120,11 @@ export function FormRole({ role, isNew = false, onClose }: FormRoleProps) {
             {modalMessage}
           </Typography>
 
-
           <Button
             variant="outlined"
             color={modalSuccess ? "success" : "error"}
             onClick={handleModalClose}
+            fullWidth
           >
             Aceptar
           </Button>

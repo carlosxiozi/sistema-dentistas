@@ -4,7 +4,7 @@ import { useState } from "react";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { FaBell, FaUserCircle, FaSun, FaMoon, FaCog, FaChevronDown } from "react-icons/fa";
 import { useDarkMode } from "@/src/app/Context/DarkModeContext";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useUser } from "@/src/app/Context/UserContext";
 import { useGetNoti } from "@/src/app/hooks/notifications";
 export default function Navbar() {
@@ -27,9 +27,11 @@ export default function Navbar() {
 
   const unreadCount = userNotifications.filter((noti) => !noti.isRead).length;
 
+  const router = useRouter();
+
   const handleLogOut = async () => {
     await fetch("/api/logout");
-    redirect("/api/Auth/Login");
+    router.push("/api/Auth/Login");
   };
 
   const markAsRead = (id: number) => {
@@ -67,54 +69,63 @@ export default function Navbar() {
 
       {/* PARTE DERECHA */}
       <div className="flex items-center justify-end space-x-3 md:space-x-4 mt-3 md:mt-0 w-full md:w-auto">
-      <div className="relative">
-    <FaBell
-      className="w-6 h-6 text-blue-500 cursor-pointer hover:scale-110 transition-transform"
-      onClick={() => setShowNotifications(!showNotifications)}
-    />
-    {unreadCount > 0 && (
-      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
-        {unreadCount}
-      </span>
-    )}
-    {showNotifications && (
-      <div
-        className={`absolute right-0 mt-2 w-64 md:w-72 max-h-80 overflow-y-auto rounded-lg shadow-xl z-50 ${isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
-          }`}
-      >
-        <div className="p-4">
-          {userNotifications.length === 0 ? (
-            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-              No tienes notificaciones
-            </p>
-          ) : (
-            [...userNotifications]
-              .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
-              .map((noti, index) => (
-                <div
-                  key={noti.id}
-                  onClick={() => markAsRead(noti.id)}
-                  className={`cursor-pointer py-2 px-2 transition-colors rounded-md hover:bg-gray-100  ${!noti.isRead ? "relative" : ""
-                    }`}
-                >
-                  {!noti.isRead && (
-                    <span className="absolute top-3 left-1 w-2 h-2 bg-blue-500 rounded-full"></span>
-                  )}
-                  <div className="ml-4">
-                    <p className="font-medium text-sm">{noti.title}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{noti.message}</p>
-                    <p className="text-[10px] text-gray-400 dark:text-gray-500">{new Date(noti.updated_at).toLocaleString()}</p>
-                  </div>
-                  {index !== userNotifications.length - 1 && (
-                    <hr className="my-2 border-gray-200 dark:border-gray-600" />
-                  )}
-                </div>
-              ))
+        <div className="relative">
+          <FaBell
+            className="w-6 h-6 text-blue-500 cursor-pointer hover:scale-110 transition-transform"
+            onClick={() => setShowNotifications(!showNotifications)}
+          />
+          {unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+              {unreadCount}
+            </span>
+          )}
+          {showNotifications && (
+            <div
+              className={`absolute mt-2 
+                  w-56 md:w-72 
+                  left-1/2 md:left-auto md:right-0 
+                  transform -translate-x-1/2 md:translate-x-0
+                  max-h-80 overflow-y-auto rounded-lg shadow-xl z-50 
+                  ${isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
+            >
+              <div className="p-4">
+                {userNotifications.length === 0 ? (
+                  <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+                    No tienes notificaciones
+                  </p>
+                ) : (
+                  [...userNotifications]
+                    .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
+                    .map((noti, index) => (
+                      <div
+                        key={noti.id}
+                        onClick={() => markAsRead(noti.id)}
+                        className={`cursor-pointer py-2 px-2 transition-colors rounded-md hover:bg-gray-100 ${!noti.isRead ? "relative" : ""
+                          }`}
+                      >
+                        {!noti.isRead && (
+                          <span className="absolute top-3 left-1 w-2 h-2 bg-blue-500 rounded-full"></span>
+                        )}
+                        <div className="ml-4">
+                          <p className="font-medium text-sm">{noti.title}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {noti.message}
+                          </p>
+                          <p className="text-[10px] text-gray-400 dark:text-gray-500">
+                            {new Date(noti.updated_at).toLocaleString()}
+                          </p>
+                        </div>
+                        {index !== userNotifications.length - 1 && (
+                          <hr className="my-2 border-gray-200 dark:border-gray-600" />
+                        )}
+                      </div>
+                    ))
+                )}
+              </div>
+            </div>
           )}
         </div>
-      </div>
-    )}
-  </div>
+
 
         {/* DARK MODE */}
         <button
@@ -157,7 +168,7 @@ export default function Navbar() {
             >
               <div
                 className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm"
-                onClick={() => redirect("/pages/Config")}
+                onClick={() => router.push("/pages/Config")}
               >
                 Mi cuenta
               </div>

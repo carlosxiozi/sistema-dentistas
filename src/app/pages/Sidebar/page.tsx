@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import Image from "next/image";
 import { useDarkMode } from "@/src/app/Context/DarkModeContext";
 import { useEffect, useState } from "react";
@@ -17,9 +17,12 @@ import { MdDashboard,MdMiscellaneousServices,MdWorkHistory  } from "react-icons/
 import { BsBarChartFill } from "react-icons/bs";
 import { TbClipboardList } from "react-icons/tb";
 import { FaUsers,FaUserShield,FaShieldAlt,FaCalendarAlt ,FaHistory   } from "react-icons/fa";
+
+
 const handleLogOut = async () => {
+
   await fetch("/api/logout");
-  window.location.href = "/api/Auth/Login";
+  redirect("/api/Auth/Login");
 };
 
 export default function Sidebar() {

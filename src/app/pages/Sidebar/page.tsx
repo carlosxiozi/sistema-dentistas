@@ -1,28 +1,22 @@
-"use client";
+'use client';
 
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
+import {  usePathname } from "next/navigation";
 import Image from "next/image";
 import { useDarkMode } from "@/src/app/Context/DarkModeContext";
 import { useEffect, useState } from "react";
 import { useGetRole } from "@/src/app/hooks/useRol";
 import { useUser } from "@/src/app/Context/UserContext";
 import { Role } from "@/src/app/models/role";
-import {
-  Bars3Icon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import { IoIosChatboxes,IoIosCloseCircle ,IoMdSettings } from "react-icons/io";
-import { MdDashboard,MdMiscellaneousServices,MdWorkHistory  } from "react-icons/md";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { IoIosChatboxes, IoIosCloseCircle, IoMdSettings } from "react-icons/io";
+import { MdDashboard, MdMiscellaneousServices, MdWorkHistory } from "react-icons/md";
 import { BsBarChartFill } from "react-icons/bs";
 import { TbClipboardList } from "react-icons/tb";
-import { FaUsers,FaUserShield,FaShieldAlt,FaCalendarAlt ,FaHistory   } from "react-icons/fa";
+import { FaUsers, FaUserShield, FaShieldAlt, FaCalendarAlt, FaHistory } from "react-icons/fa";
 
-
-const handleLogOut = async () => {
-
-  await fetch("/api/logout");
-  redirect("/api/Auth/Login");
+const handleLogOut = () => {
+  window.location.href = "/api/logout";
 };
 
 export default function Sidebar() {
@@ -33,20 +27,20 @@ export default function Sidebar() {
   const { data: roles, isLoading: rolesLoading } = useGetRole();
 
   const [permissions, setPermissions] = useState<string[]>([]);
-  const [isOpen, setIsOpen] = useState(false); // control abrir/cerrar móvil
+  const [isOpen, setIsOpen] = useState(false);
 
   const sections = [
-    { name: "Dashboard", icon: MdDashboard , path: "/pages/Dashboard" },
+    { name: "Dashboard", icon: MdDashboard, path: "/pages/Dashboard" },
     { name: "Users", icon: FaUsers, path: "/pages/User" },
-    { name: "Roles", icon: FaUserShield , path: "/pages/Roles" },
-    { name: "Configuración", icon: IoMdSettings , path: "/pages/Config" },
-    { name: "Servicios", icon: MdMiscellaneousServices , path: "/pages/Tratamientos" },
+    { name: "Roles", icon: FaUserShield, path: "/pages/Roles" },
+    { name: "Configuración", icon: IoMdSettings, path: "/pages/Config" },
+    { name: "Servicios", icon: MdMiscellaneousServices, path: "/pages/Tratamientos" },
     { name: "Role-Assignment", icon: FaShieldAlt, path: "/pages/RoleAssigment" },
-    { name: "Appointments", icon: FaCalendarAlt , path: "/pages/Appointments" },
-    { name: "Historial-Clinico", icon: TbClipboardList , path: "/pages/HistorialClinico" },
-    { name: "Historial", icon: MdWorkHistory , path: "/pages/Historial" },
+    { name: "Appointments", icon: FaCalendarAlt, path: "/pages/Appointments" },
+    { name: "Historial-Clinico", icon: TbClipboardList, path: "/pages/HistorialClinico" },
+    { name: "Historial", icon: MdWorkHistory, path: "/pages/Historial" },
     { name: "ChatRapido", icon: IoIosChatboxes, path: "/pages/ChatRapido" },
-    { name: "Sessions", icon: FaHistory , path: "/pages/Sessions" },
+    { name: "Sessions", icon: FaHistory, path: "/pages/Sessions" },
     { name: "Seguimientos", icon: BsBarChartFill, path: "/pages/Seguimientos" },
   ];
 
@@ -81,7 +75,6 @@ export default function Sidebar() {
         {isOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
       </button>
 
-      {/* Overlay minimalista */}
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
@@ -91,30 +84,30 @@ export default function Sidebar() {
 
       <aside
         className={`
-          fixed top-0 left-0 h-full z-40 transform transition-transform duration-300
+          fixed top-0 left-0 z-40 transform transition-transform duration-300
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           md:translate-x-0 md:static
-          w-56 md:w-64 ${
-            isDarkMode ? "bg-gray-900 text-white" : "bg-white text-black"
-          }
-          flex flex-col px-6 py-4 items-start min
+          w-56 md:w-64
+          ${isDarkMode ? "bg-gray-900 text-white" : "bg-white text-black"}
+          flex flex-col px-6 py-4
+          h-screen md:h-auto overflow-y-auto md:overflow-visible
         `}
       >
-        {/* Logo */}
-        <div className=" w-full flex justify-center">
-            <div className="rounded-full overflow-hidden hover:scale-180 transition-transform duration-300">
-          <Image src="/logoD.png" alt="Logo" width={60} height={40}  />
-            </div>
+        <div className="w-full flex justify-center mb-2">
+          <div className="rounded-full overflow-hidden hover:scale-180 transition-transform duration-300">
+            <Image src="/logoD.png" alt="Logo" width={60} height={40} />
+          </div>
         </div>
         <hr className="w-full border-gray-300 dark:border-gray-700 my-2" />
-        <nav className="flex flex-col gap-3 w-full">
+
+        <nav className="flex flex-col gap-3 w-full flex-1">
           {filteredSections.map(({ name, icon: Icon, path }) => {
             const isActive = pathname === path;
             return (
               <Link
                 key={path}
                 href={path}
-                onClick={() => setIsOpen(false)} // cerrar al navegar
+                onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-base transition-colors ${
                   isActive
                     ? "bg-blue-600 text-white"
@@ -126,26 +119,26 @@ export default function Sidebar() {
                     isActive ? "text-white" : isDarkMode ? "text-gray-300" : "text-black"
                   }`}
                 />
-                {/* ✅ siempre visible en móvil y desktop */}
                 <span className="font-medium">{name}</span>
               </Link>
             );
           })}
 
-          {/* Cerrar sesión */}
           <button
             onClick={async () => {
               await handleLogOut();
               setIsOpen(false);
             }}
-            className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-500 hover:text-white transition-colors text-base mt-6 w-full"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-500 hover:text-white transition-colors text-base w-full mt-4 md:mt-0"
           >
-            <IoIosCloseCircle  className={`h-6 w-6 ${isDarkMode ? "text-red-500" : "text-red-500"}`} />
+            <IoIosCloseCircle
+              className={`h-6 w-6 ${isDarkMode ? "text-red-500" : "text-red-500"}`}
+            />
             <span className="font-medium">Cerrar sesión</span>
           </button>
         </nav>
 
-        <div className="mt-auto w-full text-center hidden md:block text-[10px] text-gray-500 dark:text-gray-400">
+        <div className="w-full text-center text-[10px] text-gray-500 dark:text-gray-400 mt-4 hidden md:block">
           V1.00 Sistema Dentista
         </div>
       </aside>

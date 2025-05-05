@@ -39,12 +39,9 @@ export default function ModalDialog({ role, isNew }: Props) {
         </button>
       ) : (
         <IconButton onClick={handleOpen} sx={{
-          color: '#2563eb', // azul similar a tailwind text-blue-600
-          '&:hover': {
-            color: '#1e40af', // text-blue-800 en hover
-          },
-        }}
-        >
+          color: '#2563eb',
+          '&:hover': { color: '#1e40af' },
+        }}>
           <MdEdit />
         </IconButton>
       )}
@@ -54,11 +51,7 @@ export default function ModalDialog({ role, isNew }: Props) {
         onClose={handleClose}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
+        slotProps={{ backdrop: { timeout: 500 } }}
       >
         <Fade in={isOpen}>
           <Box
@@ -67,11 +60,13 @@ export default function ModalDialog({ role, isNew }: Props) {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: 500,
+              width: { xs: '90%', sm: 500 },
               bgcolor: 'background.paper',
               borderRadius: 3,
               boxShadow: 24,
-              p: 4,
+              p: { xs: 2, sm: 4 }, // menos padding en móvil
+              maxHeight: '90vh',
+              overflowY: 'auto',
             }}
           >
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>

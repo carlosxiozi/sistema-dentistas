@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Box, Typography, Paper, IconButton, CircularProgress, Chip } from '@mui/material';
 import { Delete as DeleteIcon, Devices as DevicesIcon } from '@mui/icons-material';
@@ -89,51 +89,59 @@ export default function SessionsPage() {
               </Typography>
             </Box>
           ) : (
-            <Box display="flex" flexWrap="wrap" gap={2} justifyContent="center">
-              {sessions.map((session) => (
-                <Box
-                  key={session.token}
-                  sx={{
-                    flex: { xs: '1 1 100%', sm: '1 1 calc(50% - 16px)' },
-                    display: 'flex',
-                  }}
-                >
-                  <Paper
-                    elevation={3}
+            <Box
+              sx={{
+                maxHeight: { xs: '60vh', md: '70vh' },
+                overflowY: 'auto',
+                pr: 1,
+              }}
+            >
+              <Box display="flex" flexWrap="wrap" gap={2} justifyContent="center">
+                {sessions.map((session) => (
+                  <Box
+                    key={session.token}
                     sx={{
-                      p: 3,
+                      flex: { xs: '1 1 100%', sm: '1 1 calc(50% - 16px)' },
                       display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      borderRadius: 3,
-                      width: '100%',
                     }}
                   >
-                    <Box display="flex" alignItems="center" gap={2}>
-                      <DevicesIcon sx={{ fontSize: 40 }} />
-                      <Box>
-                        <Typography variant="subtitle1" fontWeight="bold">
-                          {session.deviceName}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          Última actividad: {session.lastActive}
-                        </Typography>
-                        {session.token === currentToken && (
-                          <Chip label="Esta sesión" color="success" size="small" sx={{ mt: 1 }} />
-                        )}
-                      </Box>
-                    </Box>
-
-                    <IconButton
-                      color="error"
-                      onClick={() => session.token && handleDeleteSession(session.token)}
-                      disabled={session.token === currentToken} // No eliminar tu sesión activa
+                    <Paper
+                      elevation={3}
+                      sx={{
+                        p: 3,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        borderRadius: 3,
+                        width: '100%',
+                      }}
                     >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Paper>
-                </Box>
-              ))}
+                      <Box display="flex" alignItems="center" gap={2}>
+                        <DevicesIcon sx={{ fontSize: 40 }} />
+                        <Box>
+                          <Typography variant="subtitle1" fontWeight="bold">
+                            {session.deviceName}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Última actividad: {session.lastActive}
+                          </Typography>
+                          {session.token === currentToken && (
+                            <Chip label="Esta sesión" color="success" size="small" sx={{ mt: 1 }} />
+                          )}
+                        </Box>
+                      </Box>
+
+                      <IconButton
+                        color="error"
+                        onClick={() => session.token && handleDeleteSession(session.token)}
+                        disabled={session.token === currentToken}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Paper>
+                  </Box>
+                ))}
+              </Box>
             </Box>
           )}
         </>

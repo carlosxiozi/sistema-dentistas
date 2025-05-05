@@ -8,7 +8,7 @@ export class UserService {
     const token = await getToken();
     return {
       "Content-Type": "application/json",
-      "Accept": "application/json",
+      Accept: "application/json",
       Authorization: `Bearer ${token}`,
     };
   }
@@ -18,16 +18,12 @@ export class UserService {
       method: "GET",
       headers: await this.buildHeader(),
     });
-
     const temp = await response.json();
-
     if (!response.ok) {
-      throw new Error(temp.message || 'Error al obtener usuarios');
+      throw new Error(temp.message || "Error al obtener usuarios");
     }
-
     return temp.data as User[];
   };
-
 
   public createUser = async (user: User): Promise<User> => {
     console.log("user", user);
@@ -38,12 +34,11 @@ export class UserService {
     });
     console.log("response", response);
     const temp = await response.json();
-    console.log(temp);
     if (!response.ok) {
       throw new Error(`${temp.message}`);
     }
     return temp;
-  }
+  };
   public updateUser = async (user: User): Promise<User> => {
     console.log("user", user);
     const response = await fetch(`${this.baseUrl}/users`, {
@@ -52,13 +47,11 @@ export class UserService {
       body: JSON.stringify(user),
     });
     const temp = await response.json();
-    console.log(temp);
     if (!response.ok) {
       throw new Error(`${temp.message}`);
     }
-
     return temp;
-  }
+  };
   public deleteUser = async (userId: number): Promise<void> => {
     const response = await fetch(`${this.baseUrl}/users/`, {
       method: "DELETE",
@@ -66,12 +59,10 @@ export class UserService {
       body: JSON.stringify({ id: userId }),
     });
     if (!response.ok) {
-      console.log(response);
       const temp = await response.json();
-
       throw new Error(`${temp.message}`);
     }
-  }
+  };
   public syncUserRole = async (userId: number, role: string): Promise<void> => {
     const response = await fetch(`${this.baseUrl}/users/${userId}`, {
       method: "PUT",
@@ -82,13 +73,8 @@ export class UserService {
       const temp = await response.json();
       throw new Error(`${temp.message}`);
     }
-
-  }
-  public syncPermissions = async (
-    userId: number,
-    permissions: string[]
-  ): Promise<void> => {
-    console.log(userId, permissions);
+  };
+  public syncPermissions = async (userId: number,permissions: string[]): Promise<void> => {
     const response = await fetch(
       `${this.baseUrl}/roles/role/sync-permissions`,
       {
@@ -96,19 +82,16 @@ export class UserService {
         headers: {
           ...(await this.buildHeader()),
           "Content-Type": "application/json",
-          'application': "application/json"
+          application: "application/json",
         },
         body: JSON.stringify({ id: userId, permissions }),
       }
     );
-    console.log("response", response);
     if (!response.ok) {
       const temp = await response.json();
-      console.log("temp", temp);
+
       throw new Error(`${temp.message}`);
     }
-    const temp = await response.json();
-    console.log("temp", temp);
   };
   public getSessions = async (userId: number): Promise<Sessions[]> => {
     const response = await fetch(`${this.baseUrl}/users/session/${userId}`, {
@@ -117,40 +100,36 @@ export class UserService {
     });
     const temp = await response.json();
     if (!response.ok) {
-      throw new Error(temp.message || 'Error al obtener sesiones');
+      throw new Error(temp.message || "Error al obtener sesiones");
     }
     return temp.data as Sessions[];
-  }
+  };
   public deleteSession = async (session: Sessions): Promise<void> => {
     console.log("session", session);
-    const response = await fetch(`${this.baseUrl}/users/sessions/`, {
+    const response = await fetch(`${this.baseUrl}/users/sessions`, {
       method: "POST",
       headers: await this.buildHeader(),
       body: JSON.stringify(session),
     });
-    console.log("response", response);
     if (!response.ok) {
       const temp = await response.json();
-      throw new Error(temp.message || 'Error al eliminar la sesión');
+      throw new Error(temp.message || "Error al eliminar la sesión");
     }
-  }
+  };
   public RegisterUser = async (user: User): Promise<UserResponse> => {
-    console.log("user", user);
     const response = await fetch(`${this.baseUrl}/auth/register`, {
       method: "POST",
       headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(user),
     });
-    console.log("response", response);
     const temp = await response.json();
     console.log(temp);
     if (!response.ok) {
-      throw new Error(temp.message || 'Error al registrar el usuario');
+      throw new Error(temp.message || "Error al registrar el usuario");
     }
     return temp as UserResponse;
-
-  }
+  };
 }

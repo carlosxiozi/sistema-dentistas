@@ -4,7 +4,6 @@ import { useState } from "react";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { FaBell, FaUserCircle, FaSun, FaMoon, FaCog, FaChevronDown } from "react-icons/fa";
 import { useDarkMode } from "@/src/app/Context/DarkModeContext";
-import { useRouter } from "next/navigation";
 import { useUser } from "@/src/app/Context/UserContext";
 import { useGetNoti } from "@/src/app/hooks/notifications";
 export default function Navbar() {
@@ -27,12 +26,11 @@ export default function Navbar() {
 
   const unreadCount = userNotifications.filter((noti) => !noti.isRead).length;
 
-  const router = useRouter();
 
-  const handleLogOut = async () => {
-    await fetch("/api/logout");
-    router.push("/api/Auth/Login");
+  const handleLogOut = () => {
+    window.location.href = "/api/logout";
   };
+  
 
   const markAsRead = (id: number) => {
     console.log(`Notificación ${id} marcada como leída`);
@@ -166,12 +164,12 @@ export default function Navbar() {
             <div
               className={`absolute right-0 mt-2 w-40 md:w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg overflow-hidden z-50`}
             >
-              <div
+                <div
                 className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm"
-                onClick={() => router.push("/pages/Config")}
-              >
+                onClick={() => (window.location.href = "/pages/Config")}
+                >
                 Mi cuenta
-              </div>
+                </div>
               <div className="border-t border-gray-300 dark:border-gray-600" />
               <div
                 className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm"

@@ -52,7 +52,7 @@ export class AppointmentsService {
       }
       public updateAppointments = async (appointment: Appointment): Promise<Appointment> => {
         
-        const response = await fetch(`${this.baseUrl}/appointments/`, {
+        const response = await fetch(`${this.baseUrl}/appointments`, {
           method: "PUT",
           headers: await this.buildHeader(),
           body: JSON.stringify({

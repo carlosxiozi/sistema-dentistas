@@ -9,22 +9,14 @@ import { useGetRole } from "@/src/app/hooks/useRol";
 import { useUser } from "@/src/app/Context/UserContext";
 import { Role } from "@/src/app/models/role";
 import {
-  Squares2X2Icon,
-  UserGroupIcon,
-  KeyIcon,
-  CalendarIcon,
-  BookOpenIcon,
-  ChatBubbleLeftEllipsisIcon,
-  ClockIcon,
-  ChartBarIcon,
-  Cog8ToothIcon,
-  BriefcaseIcon,
-  ArrowPathIcon,
-  ArrowRightOnRectangleIcon,
   Bars3Icon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-
+import { IoIosChatboxes,IoIosCloseCircle ,IoMdSettings } from "react-icons/io";
+import { MdDashboard,MdMiscellaneousServices,MdWorkHistory  } from "react-icons/md";
+import { BsBarChartFill } from "react-icons/bs";
+import { TbClipboardList } from "react-icons/tb";
+import { FaUsers,FaUserShield,FaShieldAlt,FaCalendarAlt ,FaHistory   } from "react-icons/fa";
 const handleLogOut = async () => {
   await fetch("/api/logout");
   window.location.href = "/api/Auth/Login";
@@ -41,18 +33,18 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false); // control abrir/cerrar móvil
 
   const sections = [
-    { name: "Dashboard", icon: Squares2X2Icon, path: "/pages/Dashboard" },
-    { name: "Users", icon: UserGroupIcon, path: "/pages/User" },
-    { name: "Roles", icon: KeyIcon, path: "/pages/Roles" },
-    { name: "Configuración", icon: Cog8ToothIcon, path: "/pages/Config" },
-    { name: "Servicios", icon: BriefcaseIcon, path: "/pages/Tratamientos" },
-    { name: "Role-Assignment", icon: ArrowPathIcon, path: "/pages/RoleAssigment" },
-    { name: "Appointments", icon: CalendarIcon, path: "/pages/Appointments" },
-    { name: "Historial-Clinico", icon: UserGroupIcon, path: "/pages/HistorialClinico" },
-    { name: "Historial", icon: BookOpenIcon, path: "/pages/Historial" },
-    { name: "ChatRapido", icon: ChatBubbleLeftEllipsisIcon, path: "/pages/ChatRapido" },
-    { name: "Sessions", icon: ClockIcon, path: "/pages/Sessions" },
-    { name: "Seguimientos", icon: ChartBarIcon, path: "/pages/Seguimientos" },
+    { name: "Dashboard", icon: MdDashboard , path: "/pages/Dashboard" },
+    { name: "Users", icon: FaUsers, path: "/pages/User" },
+    { name: "Roles", icon: FaUserShield , path: "/pages/Roles" },
+    { name: "Configuración", icon: IoMdSettings , path: "/pages/Config" },
+    { name: "Servicios", icon: MdMiscellaneousServices , path: "/pages/Tratamientos" },
+    { name: "Role-Assignment", icon: FaShieldAlt, path: "/pages/RoleAssigment" },
+    { name: "Appointments", icon: FaCalendarAlt , path: "/pages/Appointments" },
+    { name: "Historial-Clinico", icon: TbClipboardList , path: "/pages/HistorialClinico" },
+    { name: "Historial", icon: MdWorkHistory , path: "/pages/Historial" },
+    { name: "ChatRapido", icon: IoIosChatboxes, path: "/pages/ChatRapido" },
+    { name: "Sessions", icon: FaHistory , path: "/pages/Sessions" },
+    { name: "Seguimientos", icon: BsBarChartFill, path: "/pages/Seguimientos" },
   ];
 
   useEffect(() => {
@@ -79,7 +71,6 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Botón abrir/cerrar solo móvil */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-full shadow"
@@ -95,7 +86,6 @@ export default function Sidebar() {
         ></div>
       )}
 
-      {/* Sidebar */}
       <aside
         className={`
           fixed top-0 left-0 h-full z-40 transform transition-transform duration-300
@@ -108,20 +98,12 @@ export default function Sidebar() {
         `}
       >
         {/* Logo */}
-        <div className="mb-6 w-full flex justify-center">
-          <div className="w-20 h-20 rounded-full overflow-hidden border dark:border-gray-700 border-gray-300">
-            <Image src="/logoD.png" alt="Logo" width={80} height={80} />
-          </div>
+        <div className=" w-full flex justify-center">
+            <div className="rounded-full overflow-hidden hover:scale-180 transition-transform duration-300">
+          <Image src="/logoD.png" alt="Logo" width={60} height={40}  />
+            </div>
         </div>
-
-        {/* Nombre */}
-        <div className="text-sm font-semibold mb-4 text-center w-full">
-          Hola, {user?.name || "Invitado"}
-        </div>
-
-        <hr className="my-4 w-full border-gray-200 dark:border-gray-700" />
-
-        {/* Navegación */}
+        <hr className="w-full border-gray-300 dark:border-gray-700 my-2" />
         <nav className="flex flex-col gap-3 w-full">
           {filteredSections.map(({ name, icon: Icon, path }) => {
             const isActive = pathname === path;
@@ -133,12 +115,12 @@ export default function Sidebar() {
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-base transition-colors ${
                   isActive
                     ? "bg-blue-600 text-white"
-                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                    : "hover:bg-gray-300 dark:hover:bg-gray-300"
                 }`}
               >
                 <Icon
                   className={`h-6 w-6 ${
-                    isActive ? "text-white" : "text-gray-700 dark:text-gray-300"
+                    isActive ? "text-white" : isDarkMode ? "text-gray-300" : "text-black"
                   }`}
                 />
                 {/* ✅ siempre visible en móvil y desktop */}
@@ -155,7 +137,7 @@ export default function Sidebar() {
             }}
             className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-500 hover:text-white transition-colors text-base mt-6 w-full"
           >
-            <ArrowRightOnRectangleIcon className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+            <IoIosCloseCircle  className={`h-6 w-6 ${isDarkMode ? "text-red-500" : "text-red-500"}`} />
             <span className="font-medium">Cerrar sesión</span>
           </button>
         </nav>

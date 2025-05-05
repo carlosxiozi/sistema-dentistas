@@ -1,9 +1,10 @@
 import {  UserResponse } from '../models/auth';
 
-
 export class UserAuth {
+  
+  private baseUrl: string = process.env.NEXT_PUBLIC_API_URL!;
   public async login(email: string, password: string): Promise<UserResponse> {
-    const response = await fetch(`http://127.0.0.1:8000/api/auth/login`, {
+    const response = await fetch(`${this.baseUrl}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

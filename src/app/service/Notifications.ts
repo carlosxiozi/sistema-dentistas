@@ -2,7 +2,9 @@ import { Notification } from '../models/notifications';
 import { getToken } from '../hooks/token';
 export class NotificationService {
 
-    private baseUrl: string = "http://127.0.0.1:8000/api";
+  
+  private baseUrl: string = process.env.NEXT_PUBLIC_API_URL!;
+  
     private async buildHeader(): Promise<HeadersInit> {
          const token= await getToken();
            return {

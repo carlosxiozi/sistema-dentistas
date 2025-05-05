@@ -2,8 +2,8 @@ import { User, UserResponse } from "../models/user";
 import { getToken } from "../hooks/token";
 import { Sessions } from "../models/Sessions";
 export class UserService {
+  private baseUrl: string = process.env.NEXT_PUBLIC_API_URL!;
 
-  private baseUrl: string = "http://127.0.0.1:8000/api";
   private async buildHeader(): Promise<HeadersInit> {
     const token = await getToken();
     return {

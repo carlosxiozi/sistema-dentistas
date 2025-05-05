@@ -53,28 +53,24 @@ export class ServiceService {
         }
       ),
     });
-    console.log("response", response);
-
     const temp = await response.json();
-    console.log("temp", temp);
     if (!response.ok) {
       throw new Error(`${temp.message}`);
     }
 
     return temp;
   }
-  public deleteService = async (userId: number): Promise<void> => {
-    const response = await fetch(`${this.baseUrl}/treatments/`, {
+
+  public deleteService = async (serviceId: number): Promise<void> => {
+    const response = await fetch(`${this.baseUrl}/treatments`, {
       method: "DELETE",
       headers: await this.buildHeader(),
-      body: JSON.stringify({ id: userId }),
+      body: JSON.stringify({ id: serviceId }),
     });
     if (!response.ok) {
       const temp = await response.json();
-
       throw new Error(`${temp.message}`);
     }
   }
-
   
   }

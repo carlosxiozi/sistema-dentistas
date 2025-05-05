@@ -35,7 +35,7 @@ export class AppointmentsService {
           headers: await this.buildHeader(),
           body: JSON.stringify({
             description: appointment.description,
-            userId: appointment.userId, // Ensure this matches the API's expected field
+            user_id: appointment.userId, // Ensure this matches the API's expected field
             patient_id: appointment.patient_id, // Ensure this matches the API's expected field
             date: appointment.date,
             time: appointment.time,

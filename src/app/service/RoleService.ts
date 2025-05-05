@@ -37,7 +37,6 @@ export class RoleService {
         if (!response.ok) {
           throw new Error(`${temp.message}`);
         }
-    console.log(temp);
         return temp;
       }
       public updateRol = async (rol: Role): Promise<Role> => {

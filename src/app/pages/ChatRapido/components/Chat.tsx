@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import ChatMessages from "@/src/app/pages/ChatRapido/components/ChatMessages";
 import ChatInput from "@/src/app/pages/ChatRapido/components/ChatInput";
 
-// 📋 10 Preguntas y respuestas frecuentes
+// 📋 Preguntas frecuentes
 const preguntasFrecuentes = [
   { pregunta: "¿Cuál es el horario de atención?", respuesta: "Nuestro horario es de lunes a viernes de 9:00 a.m. a 6:00 p.m. y sábados de 9:00 a.m. a 2:00 p.m." },
   { pregunta: "¿Dónde están ubicados?", respuesta: "Estamos ubicados en Av. Siempre Viva #123, Col. Centro, CDMX." },
@@ -23,13 +23,12 @@ export default function ChatConsultorio() {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const handlePreguntaSeleccionada = (pregunta: string, respuesta: string) => {
-    const horaActual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const horaActual = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-    // Agregamos pregunta y respuesta automática al chat
-    setMensajes(prev => [
+    setMensajes((prev) => [
       ...prev,
       { sender: "paciente", content: pregunta, timestamp: horaActual },
-      { sender: "dentista", content: respuesta, timestamp: horaActual }
+      { sender: "dentista", content: respuesta, timestamp: horaActual },
     ]);
   };
 
@@ -39,13 +38,24 @@ export default function ChatConsultorio() {
 
   return (
     <div className="flex flex-col h-screen w-full bg-gray-100 dark:bg-gray-900">
-      {/* Primero mostramos las preguntas como botones */}
-      <div className="p-4 border-b bg-white dark:bg-gray-800">
+      {/* Preguntas frecuentes */}
+      <div
+        className="
+          p-2 md:p-4 
+          border-b 
+          bg-white dark:bg-gray-800 
+          overflow-x-auto 
+          whitespace-nowrap 
+          flex 
+          space-x-2 
+          no-scrollbar
+        "
+      >
         <ChatInput preguntas={preguntasFrecuentes} onPreguntaSeleccionada={handlePreguntaSeleccionada} />
       </div>
 
-      {/* Después mostramos el chat de mensajes */}
-      <div className="flex-1 overflow-y-auto p-4">
+      {/* Mensajes */}
+      <div className="flex-1 overflow-y-auto p-2 md:p-4">
         <ChatMessages mensajes={mensajes} bottomRef={bottomRef} />
       </div>
     </div>

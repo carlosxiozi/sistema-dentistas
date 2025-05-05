@@ -21,13 +21,14 @@ import {
   BriefcaseIcon,
   ArrowPathIcon,
   ArrowRightOnRectangleIcon,
+  Bars3Icon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 
 const handleLogOut = async () => {
-   await fetch('/api/logout');
-    window.location.href = '/api/Auth/Login';
+  await fetch("/api/logout");
+  window.location.href = "/api/Auth/Login";
 };
-
 
 export default function Sidebar() {
   const { user, loading } = useUser();
@@ -37,23 +38,23 @@ export default function Sidebar() {
   const { data: roles, isLoading: rolesLoading } = useGetRole();
 
   const [permissions, setPermissions] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState(false); // control abrir/cerrar móvil
 
   const sections = [
     { name: "Dashboard", icon: Squares2X2Icon, path: "/pages/Dashboard" },
     { name: "Users", icon: UserGroupIcon, path: "/pages/User" },
     { name: "Roles", icon: KeyIcon, path: "/pages/Roles" },
     { name: "Configuración", icon: Cog8ToothIcon, path: "/pages/Config" },
-    { name: "Servicios", icon: BriefcaseIcon, path: "/pages/Tratamientos" }, // Updated icon
+    { name: "Servicios", icon: BriefcaseIcon, path: "/pages/Tratamientos" },
     { name: "Role-Assignment", icon: ArrowPathIcon, path: "/pages/RoleAssigment" },
     { name: "Appointments", icon: CalendarIcon, path: "/pages/Appointments" },
-    { name: "Historial-Clinico", icon: UserGroupIcon, path: "/pages/HistorialClinico" }, // Updated icon for patients
+    { name: "Historial-Clinico", icon: UserGroupIcon, path: "/pages/HistorialClinico" },
     { name: "Historial", icon: BookOpenIcon, path: "/pages/Historial" },
-    { name: "ChatRapido", icon: ChatBubbleLeftEllipsisIcon, path: "/pages/ChatRapido" }, // Updated icon for chat
+    { name: "ChatRapido", icon: ChatBubbleLeftEllipsisIcon, path: "/pages/ChatRapido" },
     { name: "Sessions", icon: ClockIcon, path: "/pages/Sessions" },
     { name: "Seguimientos", icon: ChartBarIcon, path: "/pages/Seguimientos" },
   ];
 
-  // Cuando tengo roles y user, busco los permisos de su rol
   useEffect(() => {
     if (roles && user) {
       const roleFound = roles.find((r: Role) => r.name.toLowerCase() === user.role.toLowerCase());
@@ -64,7 +65,8 @@ export default function Sidebar() {
       }
     }
   }, [roles, user]);
-  const filteredSections = sections.filter(section => permissions.includes(section.name));
+
+  const filteredSections = sections.filter((section) => permissions.includes(section.name));
 
   if (loading || rolesLoading) {
     return (
@@ -74,61 +76,94 @@ export default function Sidebar() {
       </aside>
     );
   }
+
   return (
-    <aside className={`w-20 md:w-64 ${isDarkMode ? "bg-gray-900 text-white" : "bg-white text-black"} shadow-lg flex flex-col p-4 items-center md:items-start transition-all duration-300 min-h-screen`}>
+    <>
+      {/* Botón abrir/cerrar solo móvil */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-full shadow"
+      >
+        {isOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
+      </button>
 
-      {/* Logo */}
-      <div className="mb-4 w-full flex justify-center">
-        <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-700">
-          <Image src="/logoD.png" alt="Logo" width={80} height={80} />
+      {/* Overlay minimalista */}
+      {isOpen && (
+        <div
+          onClick={() => setIsOpen(false)}
+          className="md:hidden fixed inset-0 bg-black/30 z-30"
+        ></div>
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed top-0 left-0 h-full z-40 transform transition-transform duration-300
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0 md:static
+          w-56 md:w-64 ${
+            isDarkMode ? "bg-gray-900 text-white" : "bg-white text-black"
+          }
+          flex flex-col px-6 py-4 items-start min
+        `}
+      >
+        {/* Logo */}
+        <div className="mb-6 w-full flex justify-center">
+          <div className="w-20 h-20 rounded-full overflow-hidden border dark:border-gray-700 border-gray-300">
+            <Image src="/logoD.png" alt="Logo" width={80} height={80} />
+          </div>
         </div>
-      </div>
 
-      {/* Nombre de usuario */}
-      <div className="text-sm font-semibold mb-4 hidden md:block text-center w-full">
-        Hola, {user?.name || "Invitado"}
-      </div>
+        {/* Nombre */}
+        <div className="text-sm font-semibold mb-4 text-center w-full">
+          Hola, {user?.name || "Invitado"}
+        </div>
 
-      <hr className="my-2 w-full border-gray-200 dark:border-gray-700" />
+        <hr className="my-4 w-full border-gray-200 dark:border-gray-700" />
 
-      {/* Navegación */}
-      <nav className="flex flex-col space-y-2 w-full flex-grow mt-4">
-        {filteredSections.map(({ name, icon: Icon, path }) => {
-          const isActive = pathname === path;
-          return (
-            <Link
-              key={path}
-              href={path}
-              className={`flex flex-col md:flex-row items-center justify-center md:justify-start gap-2 p-3 rounded-lg transition-all font-medium text-base group ${
-                isActive
-                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md"
-                  : "hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 hover:text-blue-700"
-              }`}
-            >
-              <Icon
-                className={`h-6 w-6 transform transition-transform duration-300 group-hover:scale-110 ${
-                  isActive ? "text-white" : "text-black"
+        {/* Navegación */}
+        <nav className="flex flex-col gap-3 w-full">
+          {filteredSections.map(({ name, icon: Icon, path }) => {
+            const isActive = pathname === path;
+            return (
+              <Link
+                key={path}
+                href={path}
+                onClick={() => setIsOpen(false)} // cerrar al navegar
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-base transition-colors ${
+                  isActive
+                    ? "bg-blue-600 text-white"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
                 }`}
-              />
-              <span className="hidden md:inline">{name}</span>
-            </Link>
-          );
-        })}
+              >
+                <Icon
+                  className={`h-6 w-6 ${
+                    isActive ? "text-white" : "text-gray-700 dark:text-gray-300"
+                  }`}
+                />
+                {/* ✅ siempre visible en móvil y desktop */}
+                <span className="font-medium">{name}</span>
+              </Link>
+            );
+          })}
 
-        {/* Cerrar sesión */}
-        <button
-          onClick={handleLogOut}
-          className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-2 p-3 rounded-lg hover:bg-red-500 hover:text-white transition-all font-medium text-base w-full mt-6 group"
-        >
-          <ArrowRightOnRectangleIcon className="h-6 w-6 transform transition-transform duration-300 group-hover:scale-110 text-black" />
-          <span className="hidden md:inline">Cerrar sesión</span>
-        </button>
-      </nav>
+          {/* Cerrar sesión */}
+          <button
+            onClick={async () => {
+              await handleLogOut();
+              setIsOpen(false);
+            }}
+            className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-500 hover:text-white transition-colors text-base mt-6 w-full"
+          >
+            <ArrowRightOnRectangleIcon className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+            <span className="font-medium">Cerrar sesión</span>
+          </button>
+        </nav>
 
-      <div className="mt-8 w-full text-center hidden md:block text-[10px] text-gray-500 dark:text-gray-400">
-        V1.00 Sistema Dentista
-      </div>
-
-    </aside>
+        <div className="mt-auto w-full text-center hidden md:block text-[10px] text-gray-500 dark:text-gray-400">
+          V1.00 Sistema Dentista
+        </div>
+      </aside>
+    </>
   );
 }

@@ -14,7 +14,6 @@ export default function ChatInput({ preguntas, onPreguntaSeleccionada }: ChatInp
 
   return (
     <div>
-      {/* SELECT SOLO EN MÓVIL */}
       <select
         onChange={handleSelectChange}
         className="block md:hidden w-full bg-white dark:bg-gray-700 text-black dark:text-white border rounded p-2"

@@ -8,7 +8,6 @@ import { User } from '@/src/app/models/user';
 import Loading from '@/src/app/components/Loading';
 import Swal from 'sweetalert2';
 import ModalPermission from '../components/ModalPermissions';
-import { Breadcrumb } from 'react-bootstrap';
 
 export default function RoleAssignmentCards() {
     const [isSpinning, setIsSpinning] = useState(false);

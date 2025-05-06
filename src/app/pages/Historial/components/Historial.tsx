@@ -10,8 +10,9 @@ import { Email, Phone, Person } from "@mui/icons-material";
 import { useCreateHistorial } from "@/src/app/hooks/historial";
 import { useUser } from "@/src/app/Context/UserContext";
 import { useRouter } from "next/navigation";
+
 export default function HistorialClinicoForm() {
-    const router = useRouter(); // ✅ Declarar aquí arriba al nivel del componente
+  const router = useRouter();
   const [formulario, setFormulario] = useState({
     nombre: "",
     edad: "",
@@ -57,8 +58,10 @@ export default function HistorialClinicoForm() {
       "antecedentesMedicos",
     ];
 
-    const camposVacios = camposObligatorios.filter(field => !formulario[field as keyof typeof formulario]);
-    
+    const camposVacios = camposObligatorios.filter(
+      (field) => !formulario[field as keyof typeof formulario]
+    );
+
     if (camposVacios.length > 0) {
       setError("Por favor llena todos los campos obligatorios.");
       return;
@@ -69,6 +72,7 @@ export default function HistorialClinicoForm() {
       ...formulario,
       paciente_id: user.id,
     };
+
     createHistorial(historialCompleto, {
       onSuccess: () => {
         setExito(true);
@@ -79,17 +83,21 @@ export default function HistorialClinicoForm() {
           telefono: "",
           correo: "",
           ocupacion: "",
-          fechaConsulta: new Date().toISOString().split("T")[0], // Fecha de hoy en formato YYYY-MM-DD
+          fechaConsulta: new Date().toISOString().split("T")[0], // Fecha de hoy
           motivoConsulta: "Paciente nuevo",
           antecedentesMedicos: "",
           antecedentesDentales: "",
           notasAdicionales: "",
         });
-        router.push("/pages/Appointments");
+
+        // ✅ AQUI EL DELAY ANTES DE REDIRIGIR
+        setTimeout(() => {
+          router.push("/pages/Appointments");
+        }, 2000); // 2 segundos de espera
       },
       onError: () => {
         setError("Ocurrió un error al guardar el historial. Intenta nuevamente.");
-      }
+      },
     });
   };
 
@@ -108,25 +116,85 @@ export default function HistorialClinicoForm() {
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           {/* Sección: Datos del Paciente */}
           <FormSection title="Datos del Paciente">
-            <FormField icon={<Person />} label="Nombre completo *" name="nombre" value={formulario.nombre} onChange={handleChange} />
-            <FormField label="Edad *" name="edad" type="number" value={formulario.edad} onChange={handleChange} />
-            <FormField label="Sexo *" name="sexo" value={formulario.sexo} onChange={handleChange} />
-            <FormField icon={<Phone />} label="Teléfono *" name="telefono" value={formulario.telefono} onChange={handleChange} />
-            <FormField icon={<Email />} label="Correo electrónico (opcional)" name="correo" value={formulario.correo} onChange={handleChange} />
-            <FormField label="Ocupación (opcional)" name="ocupacion" value={formulario.ocupacion} onChange={handleChange} />
+            <FormField
+              icon={<Person />}
+              label="Nombre completo *"
+              name="nombre"
+              value={formulario.nombre}
+              onChange={handleChange}
+            />
+            <FormField
+              label="Edad *"
+              name="edad"
+              type="number"
+              value={formulario.edad}
+              onChange={handleChange}
+            />
+            <FormField
+              label="Sexo *"
+              name="sexo"
+              value={formulario.sexo}
+              onChange={handleChange}
+            />
+            <FormField
+              icon={<Phone />}
+              label="Teléfono *"
+              name="telefono"
+              value={formulario.telefono}
+              onChange={handleChange}
+            />
+            <FormField
+              icon={<Email />}
+              label="Correo electrónico (opcional)"
+              name="correo"
+              value={formulario.correo}
+              onChange={handleChange}
+            />
+            <FormField
+              label="Ocupación (opcional)"
+              name="ocupacion"
+              value={formulario.ocupacion}
+              onChange={handleChange}
+            />
           </FormSection>
 
           {/* Sección: Información de la Consulta */}
           <FormSection title="Información de la Consulta">
-            <FormField label="Antecedentes médicos *" name="antecedentesMedicos" value={formulario.antecedentesMedicos} onChange={handleChange} multiline rows={2} />
-            <FormField label="Antecedentes dentales (opcional)" name="antecedentesDentales" value={formulario.antecedentesDentales} onChange={handleChange} multiline rows={2} />
-            <FormField label="Notas adicionales (opcional)" name="notasAdicionales" value={formulario.notasAdicionales} onChange={handleChange} multiline rows={2} />
+            <FormField
+              label="Antecedentes médicos *"
+              name="antecedentesMedicos"
+              value={formulario.antecedentesMedicos}
+              onChange={handleChange}
+              multiline
+              rows={2}
+            />
+            <FormField
+              label="Antecedentes dentales (opcional)"
+              name="antecedentesDentales"
+              value={formulario.antecedentesDentales}
+              onChange={handleChange}
+              multiline
+              rows={2}
+            />
+            <FormField
+              label="Notas adicionales (opcional)"
+              name="notasAdicionales"
+              value={formulario.notasAdicionales}
+              onChange={handleChange}
+              multiline
+              rows={2}
+            />
           </FormSection>
 
           <SaveButton />
         </form>
 
-        <SuccessSnackbar error={error} setError={setError} exito={exito} setExito={setExito} />
+        <SuccessSnackbar
+          error={error}
+          setError={setError}
+          exito={exito}
+          setExito={setExito}
+        />
       </div>
     </Container>
   );

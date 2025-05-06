@@ -127,12 +127,6 @@ export default function RoleAssignmentCards() {
 
     return (
         <>
-            <Breadcrumb>
-                <Breadcrumb.Item href="/pages/Dashboard">Inicio</Breadcrumb.Item>
-                <Breadcrumb.Item active>Roles a asignar</Breadcrumb.Item>
-            </Breadcrumb>
-
-            {/* Header con botón actualizar */}
             <div className="flex justify-between items-center mb-4 px-1">
                 <h1 className="text-xl font-semibold text-gray-800">Gestión de Roles</h1>
                 <button

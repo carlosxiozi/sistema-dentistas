@@ -14,10 +14,10 @@ import { MdDashboard, MdMiscellaneousServices, MdWorkHistory } from "react-icons
 import { BsBarChartFill } from "react-icons/bs";
 import { TbClipboardList } from "react-icons/tb";
 import { FaUsers, FaUserShield, FaShieldAlt, FaCalendarAlt, FaHistory } from "react-icons/fa";
-
-const handleLogOut = () => {
-  window.location.href = "/api/logout";
-};
+const handleLogOut = async () => {
+  await fetch("/api/logout")
+  window.location.href = "/";
+ };
 
 export default function Sidebar() {
   const { user, loading } = useUser();

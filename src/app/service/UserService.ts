@@ -26,13 +26,12 @@ export class UserService {
   };
 
   public createUser = async (user: User): Promise<User> => {
-    console.log("user", user);
+
     const response = await fetch(`${this.baseUrl}/users`, {
       method: "POST",
       headers: await this.buildHeader(),
       body: JSON.stringify(user),
     });
-    console.log("response", response);
     const temp = await response.json();
     if (!response.ok) {
       throw new Error(`${temp.message}`);
@@ -40,7 +39,7 @@ export class UserService {
     return temp;
   };
   public updateUser = async (user: User): Promise<User> => {
-    console.log("user", user);
+    
     const response = await fetch(`${this.baseUrl}/users`, {
       method: "PUT",
       headers: await this.buildHeader(),
@@ -82,7 +81,6 @@ export class UserService {
         headers: {
           ...(await this.buildHeader()),
           "Content-Type": "application/json",
-          application: "application/json",
         },
         body: JSON.stringify({ id: userId, permissions }),
       }
@@ -105,7 +103,7 @@ export class UserService {
     return temp.data as Sessions[];
   };
   public deleteSession = async (session: Sessions): Promise<void> => {
-    console.log("session", session);
+
     const response = await fetch(`${this.baseUrl}/users/sessions`, {
       method: "POST",
       headers: await this.buildHeader(),
@@ -126,7 +124,7 @@ export class UserService {
       body: JSON.stringify(user),
     });
     const temp = await response.json();
-    console.log(temp);
+
     if (!response.ok) {
       throw new Error(temp.message || "Error al registrar el usuario");
     }

@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from "react";
 import {
-  Accordion, AccordionSummary, AccordionDetails, Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
   Container
 } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -11,6 +14,7 @@ import { useGet, useCreateHistorial } from "@/src/app/hooks/historial";
 import HistorialCard from "@/src/app/pages/HistorialClinico/components/HistorialCard";
 import UpdateHistorialModal from "@/src/app/pages/HistorialClinico/components/UpdatedHistorialModal";
 import { User } from "@/src/app/models/user";
+import { useUser } from "@/src/app/Context/UserContext";
 
 interface Historial {
   id: number;
@@ -18,8 +22,11 @@ interface Historial {
   [key: string]: null | string | number | boolean;
 }
 
-export default function HistorialesPorPaciente() {
-  // ✅ TIPADO explícito usando tu modelo User
+interface Props {
+  patientId?: number;
+}
+
+export default function HistorialesPorPaciente({ patientId }: Props) {
   const { data: usersData } = useGetUser();
   const users = usersData as User[];
   const { data: historiales } = useGet();
@@ -28,28 +35,36 @@ export default function HistorialesPorPaciente() {
   const [historialesPorPaciente, setHistorialesPorPaciente] = useState<Record<number, Historial[]>>({});
   const [openModal, setOpenModal] = useState(false);
   const [historialActual, setHistorialActual] = useState<number | null>(null);
+  const { user } = useUser(); // <-- usuario logueado
 
   useEffect(() => {
     if (!users || !historiales) return;
 
-    const pacientes = users?.filter((user) => user.role === "patient");
+    // 👉 Filtrado dinámico según el rol
+    const pacientesFiltrados = users.filter((u) =>
+      user?.role === "patient"
+        ? Number(u.id) === Number(user.id) // solo su propio registro
+        : u.role === "patient"             // todos los pacientes si no es "patient"
+    );
+
+    console.log("Pacientes filtrados:", pacientesFiltrados);
+    console.log("Historiales:", historiales);
 
     const agrupados: Record<number, Historial[]> = {};
-    pacientes.forEach((paciente) => {
+    pacientesFiltrados.forEach((paciente) => {
       if (typeof paciente.id === "number") {
         agrupados[paciente.id] = historiales
           .filter((historial) => (historial.paciente_id ?? 0) === paciente.id)
           .map((historial) => ({
             ...historial,
-            paciente_id: Number(historial.paciente_id), // Ensure paciente_id is a number
-            id: Number(historial.id), // Ensure id is a number
+            paciente_id: Number(historial.paciente_id),
+            id: Number(historial.id),
           }));
       }
     });
 
-
     setHistorialesPorPaciente(agrupados);
-  }, [users, historiales]);
+  }, [users, historiales, patientId, user?.role, user?.id]);
 
   const handleOpenModal = (pacienteId: number) => {
     setHistorialActual(pacienteId);
@@ -67,35 +82,50 @@ export default function HistorialesPorPaciente() {
           Historiales Clínicos por Paciente
         </Typography>
 
-        {users?.filter((user) => user.role === "patient").map((paciente) => (
-          <Accordion key={paciente.id} sx={{
-            backgroundColor: "#f1f5f9",
-            borderRadius: 2,
-            mb: 2,
-            boxShadow: 2,
-            border: "1px solid #cbd5e1"
-          }}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ bgcolor: "#e2e8f0", borderRadius: 2 }}>
-              <Typography variant="h6" className="font-semibold text-gray-800">
-                {paciente.name ?? "Paciente sin nombre"} (ID: {paciente.id})
-              </Typography>
-            </AccordionSummary>
-
-            <AccordionDetails sx={{ backgroundColor: "#ffffff", borderRadius: 1 }}>
-              {paciente.id !== undefined && historialesPorPaciente[Number(paciente.id)]?.length > 0 ? (
-                historialesPorPaciente[Number(paciente.id)]?.map((historial, idx) => (
-                  <HistorialCard key={idx} historial={{ ...historial, id: String(historial.id), paciente_id: String(historial.paciente_id) }} onActualizar={() => handleOpenModal(Number(paciente.id))} />
-                ))
-              ) : (
-                <Typography variant="body2" color="textSecondary">
-                  No hay historiales registrados para este paciente.
+        {users
+          ?.filter((u) =>
+            user?.role === "patient"
+              ? Number(u.id) === Number(user.id)
+              : u.role === "patient"
+          )
+          .map((paciente) => (
+            <Accordion
+              key={paciente.id}
+              sx={{
+                backgroundColor: "#f1f5f9",
+                borderRadius: 2,
+                mb: 2,
+                boxShadow: 2,
+                border: "1px solid #cbd5e1"
+              }}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ bgcolor: "#e2e8f0", borderRadius: 2 }}>
+                <Typography variant="h6" className="font-semibold text-gray-800">
+                  {paciente.name ?? "Paciente sin nombre"} (ID: {paciente.id})
                 </Typography>
-              )}
-            </AccordionDetails>
+              </AccordionSummary>
 
-
-          </Accordion>
-        ))}
+              <AccordionDetails sx={{ backgroundColor: "#ffffff", borderRadius: 1 }}>
+                {paciente.id !== undefined && historialesPorPaciente[Number(paciente.id)]?.length > 0 ? (
+                  historialesPorPaciente[Number(paciente.id)]?.map((historial, idx) => (
+                    <HistorialCard
+                      key={idx}
+                      historial={{
+                        ...historial,
+                        id: String(historial.id),
+                        paciente_id: String(historial.paciente_id)
+                      }}
+                      onActualizar={() => handleOpenModal(Number(paciente.id))}
+                    />
+                  ))
+                ) : (
+                  <Typography variant="body2" color="textSecondary">
+                    No hay historiales registrados para este paciente.
+                  </Typography>
+                )}
+              </AccordionDetails>
+            </Accordion>
+          ))}
 
         <UpdateHistorialModal
           open={openModal}

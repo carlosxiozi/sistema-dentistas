@@ -10,6 +10,11 @@ import { useGetRole } from "@/src/app/hooks/useRol";
 import { useGetAppointments } from "@/src/app/hooks/useAppointments";
 import Loading from "@/src/app/components/Loading";
 import dayjs from "dayjs";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
 
 const DashboardPage = () => {
   const { data: users, isLoading: usersLoading } = useGetUser();
@@ -38,13 +43,20 @@ const DashboardPage = () => {
   const saturday = monday.add(5, "day").endOf("day");
 
   const citasSemana =
-    appointments?.filter((a) => {
-      const citaDate = dayjs(`${a.date} ${a.time}`, "YYYY-MM-DD HH:mm:ss");
-      return (
-        citaDate.isAfter(monday.clone().subtract(1, "minute")) &&
-        citaDate.isBefore(saturday.clone().add(1, "minute"))
-      );
-    }) || [];
+  appointments?.filter((a) => {
+    const citaDateStr = `${a.date.split(' ')[0]} ${a.time}`;
+    const citaDate = dayjs(citaDateStr, "YYYY-MM-DD HH:mm:ss");
+    
+    if (!citaDate.isValid()) {
+      console.warn("Fecha inválida:", citaDateStr);
+      return false;
+    }
+
+    return (
+      citaDate.isSameOrAfter(monday.startOf('day')) &&
+      citaDate.isSameOrBefore(saturday.endOf('day'))
+    );
+  }) || [];
 
   return (
     <div

@@ -18,8 +18,6 @@ export default function ModalPermission({ role, onClose }: ModalPermissionProps)
   const { mutate: syncPermissions } = useSyncPermissions();
   const [currentPermissions, setCurrentPermissions] = useState<string[]>([]);
 
-  console.log("rol de la base", role.permissions);
-  console.log("rol actual", currentPermissions);
 
   useEffect(() => {
     if (role?.permissions) {
@@ -41,7 +39,6 @@ export default function ModalPermission({ role, onClose }: ModalPermissionProps)
   };
 
   const handleSave = () => {
-    console.log('Guardando permisos:', currentPermissions);
     syncPermissions(
       { userId: role.id, permissions: currentPermissions },
       {

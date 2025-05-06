@@ -27,8 +27,9 @@ export default function Navbar() {
   const unreadCount = userNotifications.filter((noti) => !noti.isRead).length;
 
 
-  const handleLogOut = () => {
-    window.location.href = "/api/logout";
+  const handleLogOut = async () => {
+   await fetch("/api/logout")
+   window.location.href = "/";
   };
   
 

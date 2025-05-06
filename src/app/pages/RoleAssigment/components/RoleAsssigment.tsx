@@ -145,7 +145,7 @@ export default function RoleAssignmentCards() {
                         className="bg-white shadow-md rounded-lg p-5 flex flex-col items-center text-center border border-gray-200"
                     >
                         <FaUserCircle className="text-4xl text-gray-500 mb-2" />
-                        <h3 className="text-lg font-semibold text-gray-800">{user.name}</h3>
+                        <h3 className="text-lg font-semibold text-black">{user.name}</h3>
                         <p className="text-sm text-gray-500 mb-4">{user.email}</p>
 
                         <div className="w-full">
@@ -153,7 +153,7 @@ export default function RoleAssignmentCards() {
                                 Rol asignado
                             </label>
                             <select
-                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                className="block w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                 value={user.role || 'Sin rol'}
                                 onChange={(e) => handleRoleChange(Number(user.id), e.target.value)}
                             >

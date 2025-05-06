@@ -80,7 +80,7 @@ export default function Home() {
           <h1 className="text-3xl font-bold text-blue-700 flex items-center justify-center gap-2 mb-2">
             <Tooth className="w-6 h-6" /> Sistema Dent
           </h1>
-          <p className="text-sm text-black sm:text-base text-center mb-6">
+          <p className={`text-sm sm:text-base text-center mb-6 ${darkMode ? "text-white" : "text-black"}`}>
             Bienvenido al cuidado dental inteligente. Ingresa para comenzar.
           </p>
 
@@ -89,7 +89,7 @@ export default function Home() {
               name="email"
               type="email"
               placeholder="Tu correo electrónico"
-              className="w-full h-12 px-4 text-black border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-sm"
+              className={`w-full h-12 px-4 text-black border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-sm ${darkMode ? "bg-gray-300" : "bg-white"}`}
               required
             />
 
@@ -97,10 +97,10 @@ export default function Home() {
               name="password"
               type="password"
               placeholder="Tu contraseña"
-              className="w-full h-12 px-4 text-black border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-sm"
+              className={`w-full h-12 px-4 text-black border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-sm ${darkMode ? "bg-gray-300" : "bg-white"}`}
               required
             />
-            <p className="text-xs text-gray-700 mt-1">
+            <p className={`text-xs text-gray-700 mt-1 ${darkMode ? "text-white" : "text-black"}`}>
               Debe tener entre 8 y 20 caracteres.
             </p>
 

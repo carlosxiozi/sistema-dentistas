@@ -63,7 +63,7 @@ export default function Register() {
     });
   };
 
-  const inputStyle = "w-full h-12 pl-10 pr-4 text-black border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-sm placeholder-gray-400 dark:placeholder-gray-300";
+  const inputStyle = `w-full h-12 pl-10 pr-4 text-black border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-sm ${darkMode ? "placeholder-gray-300" : "placeholder-black"}`;
   const iconStyle = "absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 text-xl";
 
 
@@ -96,7 +96,7 @@ export default function Register() {
                   placeholder="Nombre completo"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full h-12 pl-10 pr-4 text-black border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-sm placeholder-gray-400 dark:placeholder-gray-300"
+                  className={`w-full h-12 pl-10 pr-4 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-sm ${darkMode ? "placeholder-gray-300" : "placeholder-black"}`}
                   required
                 />
               </div>

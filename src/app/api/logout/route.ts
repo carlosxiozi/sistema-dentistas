@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const redirectUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-  const response = NextResponse.redirect(new URL('/', redirectUrl));
+  const response = NextResponse.redirect('/');
 
   response.cookies.set({
     name: 'token',
@@ -11,7 +10,8 @@ export async function GET() {
     httpOnly: true,
     expires: new Date(0),
     secure: process.env.NODE_ENV === 'production',
-    domain: '.itblackbox.site', // <-- si usas subdominios, podrías necesitar esto
+    domain: '.itblackbox.site', // si usas subdominios
+    // o quítalo si no usas subdominios
   });
 
   return response;

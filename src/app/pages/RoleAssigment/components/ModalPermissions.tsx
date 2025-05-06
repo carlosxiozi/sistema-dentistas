@@ -11,7 +11,7 @@ interface ModalPermissionProps {
 
 const allPermissions = [
   'Users', 'Roles', 'Role-Assignment', 'Appointments', 'Seguimientos', 
-  'Historial', 'Sessions', 'ChatRapido', 'Servicios','Dashboard','Configuración', 'Historial-Clinico',
+  'Historial', 'Sessions', 'Respuestas-Rapidas', 'Servicios','Dashboard','Configuración', 'Historial-Clinico',
 ];
 
 export default function ModalPermission({ role, onClose }: ModalPermissionProps) {

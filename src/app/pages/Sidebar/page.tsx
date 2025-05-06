@@ -39,7 +39,7 @@ export default function Sidebar() {
     { name: "Appointments", icon: FaCalendarAlt, path: "/pages/Appointments" },
     { name: "Historial-Clinico", icon: TbClipboardList, path: "/pages/HistorialClinico" },
     { name: "Historial", icon: MdWorkHistory, path: "/pages/Historial" },
-    { name: "ChatRapido", icon: IoIosChatboxes, path: "/pages/ChatRapido" },
+    { name: "Respuestas-Rapidas", icon: IoIosChatboxes, path: "/pages/ChatRapido" },
     { name: "Sessions", icon: FaHistory, path: "/pages/Sessions" },
     { name: "Seguimientos", icon: BsBarChartFill, path: "/pages/Seguimientos" },
   ];

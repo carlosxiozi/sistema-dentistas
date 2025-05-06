@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import ChatMessages from "@/src/app/pages/ChatRapido/components/ChatMessages";
-import ChatInput from "@/src/app/pages/ChatRapido/components/ChatInput";
+import { useState } from "react";
 
 // 📋 Preguntas frecuentes
 const preguntasFrecuentes = [
@@ -19,44 +17,41 @@ const preguntasFrecuentes = [
 ];
 
 export default function ChatConsultorio() {
-  const [mensajes, setMensajes] = useState<{ sender: string; content: string; timestamp: string }[]>([]);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const handlePreguntaSeleccionada = (pregunta: string, respuesta: string) => {
-    const horaActual = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-
-    setMensajes((prev) => [
-      ...prev,
-      { sender: "paciente", content: pregunta, timestamp: horaActual },
-      { sender: "dentista", content: respuesta, timestamp: horaActual },
-    ]);
+  const handleToggle = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
   };
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [mensajes]);
-
   return (
-    <div className="flex flex-col h-screen w-full bg-gray-100 dark:bg-gray-900">
-      {/* Preguntas frecuentes */}
-      <div
-        className="
-          p-2 md:p-4 
-          border-b 
-          bg-white dark:bg-gray-800 
-          overflow-x-auto 
-          whitespace-nowrap 
-          flex 
-          space-x-2 
-          no-scrollbar
-        "
-      >
-        <ChatInput preguntas={preguntasFrecuentes} onPreguntaSeleccionada={handlePreguntaSeleccionada} />
-      </div>
-
-      {/* Mensajes */}
-      <div className="flex-1 overflow-y-auto p-2 md:p-4">
-        <ChatMessages mensajes={mensajes} bottomRef={bottomRef} />
+    <div className="flex flex-col items-center justify-center min-h-screen  p-4">
+      <div className="w-full max-w-xl space-y-3">
+        {preguntasFrecuentes.map((item, index) => (
+          <div key={index} className="border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm overflow-hidden transition-all duration-300">
+            <button
+              onClick={() => handleToggle(index)}
+              className={`w-full text-left px-4 py-3 flex justify-between items-center bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 font-semibold text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            >
+              {item.pregunta}
+              <svg
+                className={`w-5 h-5 transform transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div
+              className={`px-4 overflow-hidden transition-all duration-300 ${
+                openIndex === index ? "max-h-96 opacity-100 py-3" : "max-h-0 opacity-0 py-0"
+              } text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800`}
+              style={{ transitionProperty: "max-height, opacity, padding" }}
+            >
+              {item.respuesta}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

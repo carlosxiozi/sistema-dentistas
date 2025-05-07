@@ -14,8 +14,8 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
-    if (!userContext || !userContext.user) {
-      router.push('/api/auth/login');
+    if (!userContext) {
+      router.push('/api/Auth/Login');
       return;
     }
 

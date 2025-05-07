@@ -30,7 +30,7 @@ function Users() {
   const { currentRows, totalPages } = usePagination<Role>(roles, currentPage, search, 'roles');
   const darkModeContext = useDarkMode();
   const isDarkMode = darkModeContext?.isDarkMode ?? false;
-console.log(roles);
+
   const handleDelete = (userId: string) => {
     Swal.fire({
       title: '¿Estás seguro?',

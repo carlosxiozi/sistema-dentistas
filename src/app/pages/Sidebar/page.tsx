@@ -59,7 +59,7 @@ export default function Sidebar() {
 
   if (loading || rolesLoading) {
     return (
-      <aside className="w-20 md:w-64 bg-white dark:bg-gray-900 shadow-lg flex flex-col items-center p-6 animate-pulse min-h-screen">
+      <aside className="w-20 md:w-64 bg-white dark:bg-gray-900 shadow-lg flex flex-col items-center p-6 animate-pulse min-h-screen sticky top-0">
         <div className="w-20 h-20 bg-gray-300 rounded-full mb-4" />
         <div className="h-4 bg-gray-300 rounded w-3/4 mb-4" />
       </aside>

@@ -166,14 +166,14 @@ export default function Navbar() {
               className={`absolute right-0 mt-2 w-40 md:w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg overflow-hidden z-50`}
             >
                 <div
-                className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm"
+                className={`px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm ${isDarkMode ? "text-black" : "text-black"}`}
                 onClick={() => (window.location.href = "/pages/Config")}
                 >
                 Mi cuenta
                 </div>
               <div className="border-t border-gray-300 dark:border-gray-600" />
               <div
-                className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm"
+                className={`px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm ${isDarkMode ? "text-black" : "text-black"}`}
                 onClick={handleLogOut}
               >
                 Cerrar sesión

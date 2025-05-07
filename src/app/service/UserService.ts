@@ -52,7 +52,7 @@ export class UserService {
     return temp;
   };
   public deleteUser = async (userId: number): Promise<void> => {
-    const response = await fetch(`${this.baseUrl}/users/`, {
+    const response = await fetch(`${this.baseUrl}/users`, {
       method: "DELETE",
       headers: await this.buildHeader(),
       body: JSON.stringify({ id: userId }),

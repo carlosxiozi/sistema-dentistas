@@ -44,9 +44,13 @@ const DashboardPage = () => {
 
   const citasSemana =
   appointments?.filter((a) => {
+    if (a.status !== "pending") {
+      return false;
+    }
+
     const citaDateStr = `${a.date.split(' ')[0]} ${a.time}`;
     const citaDate = dayjs(citaDateStr, "YYYY-MM-DD HH:mm:ss");
-    
+
     if (!citaDate.isValid()) {
       console.warn("Fecha inválida:", citaDateStr);
       return false;

@@ -35,7 +35,9 @@ export default function Appointments() {
   }, [appointmentsData]);
 
   const events = useMemo(() => {
-    return appointments.map((appointment) => {
+    return appointments
+      .filter((appointment) => appointment.status === 'pending')
+      .map((appointment) => {
       const formattedDate = dayjs(appointment.date).format('YYYY-MM-DD');
       const dateTimeString = `${formattedDate}T${appointment.time}`;
       const start = new Date(dateTimeString).toISOString();

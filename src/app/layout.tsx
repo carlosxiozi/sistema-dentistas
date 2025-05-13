@@ -1,23 +1,20 @@
 
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers/providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import { Inter, Roboto_Mono } from "next/font/google";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const geistSans = Inter({ subsets: ["latin"] });
+const geistMono = Roboto_Mono({ subsets: ["latin"] });
+
 
 export const metadata: Metadata = {
-  title: "Sistema ",
-  description: "Sistema de gestión de proyectos",
+  title: "Sistemas dental",
+  description: "Producto de prueba para sistemas dental",
+  manifest: "/manifest.json",
 };
+
 
 export default function RootLayout({
   children,
@@ -27,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.style} ${geistMono.style} antialiased`}
       >
         <Providers >
           {children}

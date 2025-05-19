@@ -11,7 +11,12 @@ export default function Home() {
   const router = useRouter();
   const [darkMode, setDarkMode] = useState(false);
   const [state, dispatch] = useActionState(authenticate, { status: '', message: '' });
-
+ useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            router.push('/pages/Dashboard');
+        }
+    }, [router]);
   useEffect(() => {
     const saved = localStorage.getItem("darkMode");
     if (saved === "true") setDarkMode(true);

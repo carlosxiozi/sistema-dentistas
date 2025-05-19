@@ -15,7 +15,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!userContext || !userContext.user) {
-      router.push('/api/auth/login');
+      router.push('/api/Auth/Login');
       return;
     }
 

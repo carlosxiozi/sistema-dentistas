@@ -10,7 +10,7 @@ interface ModalPermissionProps {
 }
 
 const allPermissions = [
-  'Users', 'Roles', 'Role-Assignment', 'Appointments', 'Seguimientos', 
+  'Users', 'Roles', 'Rol-Asignar', 'Citas', 'Seguimientos', 
   'Historial', 'Sessions', 'Respuestas-Rapidas', 'Servicios','Dashboard','Configuración', 'Historial-Clinico',
 ];
 

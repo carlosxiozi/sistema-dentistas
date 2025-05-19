@@ -39,7 +39,7 @@ export class ServiceService {
     if (!response.ok) {
       throw new Error(`${temp.message}`);
     }
-    return temp;
+    return temp.data as Service;
   }
   public updateService = async (service: Service): Promise<Service> => {
 
